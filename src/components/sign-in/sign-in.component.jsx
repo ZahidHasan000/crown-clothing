@@ -43,8 +43,7 @@ class SignIn extends React.Component {
                     <div className="buttons">
                         <CustomButton type={"submit"}>SIGN IN</CustomButton>
                         <CustomButton onClick={signInWithGoogle} isGoogleSignIn>
-                            {' '}
-                            Sign in with Google{' '}
+                            Google Sign In
                         </CustomButton>
                     </div>
 
