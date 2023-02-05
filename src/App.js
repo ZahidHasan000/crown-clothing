@@ -4,6 +4,8 @@ import { Route, Switch } from 'react-router-dom';
 // import { Route, Routes } from 'react-router-dom';
 // import { BrowserRouter } from 'react-router-dom';
 
+import { connect } from 'react-redux';
+
 import './App.css';
 
 import HomePage from './pages/homepage/homepage.component';
@@ -16,6 +18,8 @@ import Header from './components/header/header.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
+import { setCurrentUser } from './redux/user/user.actions'
+
 
 // const HatsPage = () => (
 //   <div>
@@ -26,17 +30,21 @@ import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 // function App() {
 
 class App extends React.Component {
-  constructor() {
-    super();
+  // We don't need this constructor for redux set-up
+  // constructor() {
+  //   super();
 
-    this.state = {
-      currentUser: null
-    };
-  }
+  //   this.state = {
+  //     currentUser: null
+  //   };
+  // }
 
   unsubscribeFromAuth = null;
 
   componentDidMount() {
+    //Reason for redux
+    const { setCurrentUser } = this.props;
+
     // this.unsubscribeFromAuth = auth.onAuthStateChanged(user => {
     //   this.setState({ currentUser: user });
     //   console.log(user);
@@ -49,20 +57,29 @@ class App extends React.Component {
         const userRef = await createUserProfileDocument(userAuth);
 
         userRef.onSnapshot(snapShot => {
-          this.setState({
-            currentUser: {
-              id: snapShot.id,
-              ...snapShot.data()
-            }
-          }, () => {
-            console.log(this.state);
-          });
+          //Reason for redus set-up
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data()
+          })
 
-          console.log(this.state);
+
+          // this.setState({
+          //   currentUser: {
+          //     id: snapShot.id,
+          //     ...snapShot.data()
+          //   }
+          // }, () => {
+          //   console.log(this.state);
+          // });
+
+          // console.log(this.state);
         });
       }
+      //Reason for redux set-up
+      setCurrentUser(userAuth);
 
-      this.setState({ currentUser: userAuth });
+      // this.setState({ currentUser: userAuth });
     });
   }
 
@@ -74,8 +91,10 @@ class App extends React.Component {
     return (
 
       <div>
-        {/* <Header /> */}
-        <Header currentUser={this.state.currentUser} />
+        {/* for Redux set-up */}
+        <Header />
+
+        {/* <Header currentUser={this.state.currentUser} /> */}
         <Switch>
           {/* <Routes> */}
           {/* <BrowserRouter> */}
@@ -97,5 +116,10 @@ class App extends React.Component {
 
 }
 
+//redux set-up 
+const mapDispatchToProps = dispatch => ({
+  setCurrentUser: user => dispatch(setCurrentUser(user))
+});
+export default connect(null, mapDispatchToProps)(App);
 
-export default App;
+// export default App;
