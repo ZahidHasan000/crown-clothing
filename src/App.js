@@ -1,6 +1,6 @@
 import React from 'react';
 // 
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 // import { Route, Routes } from 'react-router-dom';
 // import { BrowserRouter } from 'react-router-dom';
 
@@ -100,7 +100,10 @@ class App extends React.Component {
           {/* <BrowserRouter> */}
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
-          <Route exact path='/signin' component={SignInAndSignUpPage} />
+          <Route exact path='/signin' render={() => this.props.currentUser ?
+            (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
+
+          {/* <Route exact path='/signin' component={SignInAndSignUpPage} /> */}
           {/* </BrowserRouter> */}
           {/* </Routes> */}
 
@@ -116,10 +119,16 @@ class App extends React.Component {
 
 }
 
+const mapStateToProps = ({ user }) => ({
+  currentUser: user.currentUser
+});
+
 //redux set-up 
 const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
+
+// export default connect(null, mapDispatchToProps)(App);
 
 // export default App;
