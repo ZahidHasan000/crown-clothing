@@ -6,6 +6,9 @@ import CustomButton from "../custom-button/custom-button.component";
 
 import CartItem from "../cart-item/cart-item.component";
 
+//another selector
+import { selectCartItems } from "../../redux/cart/cart.selectors";
+
 import './cart-dropdown.styles.scss';
 
 // const CartDropdown = () => (
@@ -28,8 +31,13 @@ const CartDropdown = ({ cartItems }) => (
     </div>
 );
 
-const mapStateToProps = ({ cart: { cartItems } }) => ({
-    cartItems
+// const mapStateToProps = ({ cart: { cartItems } }) => ({
+//     cartItems
+// });
+
+//another selector(save us our performance in CHECKOUT box when we sign out in our App)
+const mapStateToProps = state => ({
+    cartItems: selectCartItems(state)
 });
 export default connect(mapStateToProps)(CartDropdown);
 
