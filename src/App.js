@@ -6,6 +6,9 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 
 import { connect } from 'react-redux';
 
+//user selector
+import { createStructuredSelector } from 'reselect';
+
 import './App.css';
 
 import HomePage from './pages/homepage/homepage.component';
@@ -14,11 +17,17 @@ import ShopPage from './pages/shop/shop.component';
 
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 
+//reason for checkout page
+import CheckoutPage from './pages/checkout/checkout.component';
+
 import Header from './components/header/header.component';
 
 import { auth, createUserProfileDocument } from './firebase/firebase.utils';
 
-import { setCurrentUser } from './redux/user/user.actions'
+import { setCurrentUser } from './redux/user/user.actions';
+
+//user selector
+import { selectCurrentUser } from './redux/user/user.selectors';
 
 
 // const HatsPage = () => (
@@ -100,6 +109,10 @@ class App extends React.Component {
           {/* <BrowserRouter> */}
           <Route exact path='/' component={HomePage} />
           <Route exact path='/shop' component={ShopPage} />
+
+          {/* //reason for checkout page */}
+          <Route exact path='/checkout' component={CheckoutPage} />
+
           <Route exact path='/signin' render={() => this.props.currentUser ?
             (<Redirect to='/' />) : (<SignInAndSignUpPage />)} />
 
@@ -119,8 +132,13 @@ class App extends React.Component {
 
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser
+// const mapStateToProps = ({ user }) => ({
+//   currentUser: user.currentUser
+// });
+
+//user selector
+const mapStateToProps = createStructuredSelector({
+  currentUser: selectCurrentUser
 });
 
 //redux set-up 

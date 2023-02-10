@@ -2,12 +2,21 @@ import React from "react";
 
 import { connect } from "react-redux";
 
+//user selector
+import { createStructuredSelector } from "reselect";
+
+//(Modify after App js)reason for checkout page
+import { withRouter } from "react-router-dom";
+
 import CustomButton from "../custom-button/custom-button.component";
 
 import CartItem from "../cart-item/cart-item.component";
 
 //another selector
 import { selectCartItems } from "../../redux/cart/cart.selectors";
+
+//Dispatch Action Shorthand(cart-item replace the chekout page)
+import { toggleCartHidden } from '../../redux/cart/cart.actions'
 
 import './cart-dropdown.styles.scss';
 
@@ -18,17 +27,45 @@ import './cart-dropdown.styles.scss';
 //     </div>
 // );
 
-const CartDropdown = ({ cartItems }) => (
+// const CartDropdown = ({ cartItems }) => (
+
+//(Modify after App js) reason for checkout page
+// const CartDropdown = ({ cartItems, history }) => (
+
+//Dispatch Action Shorthand(cart-item replace the chekout page)
+const CartDropdown = ({ cartItems, history, dispatch }) => (
+
     <div className="cart-dropdown">
         <div className="cart-items">
             {
-                cartItems.map(cartItem => (
-                    <CartItem key={cartItem.id} item={cartItem} />
-                ))
+                // cartItems.map(cartItem => (
+                //     <CartItem key={cartItem.id} item={cartItem} />
+                // ))
+
+                //reason for Checkout page
+                cartItems.length ? (
+                    cartItems.map(cartItem => (
+                        <CartItem key={cartItem.id} item={cartItem} />
+                    ))
+                ) : (
+                    <span className="empty-message">Your cart is empty</span>
+                )
             }
         </div>
-        <CustomButton>CHECKOUT</CustomButton>
-    </div>
+        {/* (Modify after App js)reason for checkout page */}
+        {/* <CustomButton onClick={() => history.push('./checkout')}>CHECKOUT</CustomButton> */}
+
+        {/* //Dispatch Action Shorthand(cart-item replace the chekout page) */}
+        <CustomButton onClick={() => {
+            history.push('./checkout');
+            dispatch(toggleCartHidden()
+            );
+        }}>
+            CHECKOUT
+        </CustomButton>
+
+        {/* <CustomButton>CHECKOUT</CustomButton> */}
+    </div >
 );
 
 // const mapStateToProps = ({ cart: { cartItems } }) => ({
@@ -36,10 +73,17 @@ const CartDropdown = ({ cartItems }) => (
 // });
 
 //another selector(save us our performance in CHECKOUT box when we sign out in our App)
-const mapStateToProps = state => ({
-    cartItems: selectCartItems(state)
-});
-export default connect(mapStateToProps)(CartDropdown);
+// const mapStateToProps = state => ({
+//     cartItems: selectCartItems(state)
+// });
 
+//user selector
+const mapStateToProps = createStructuredSelector({
+    cartItems: selectCartItems
+});
+//(Modify after App js)reason for checkout page
+export default withRouter(connect(mapStateToProps)(CartDropdown));
+
+// export default connect(mapStateToProps)(CartDropdown);
 
 // export default CartDropdown;
