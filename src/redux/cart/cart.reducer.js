@@ -1,6 +1,9 @@
 import CartActionTypes from "./cart.types";
 
-import { addItemToCart } from "./cart.utils";
+// import { addItemToCart } from "./cart.utils";
+
+// Remove items at checkout(increase or decrease checkout page quantity) after(cart.utils.js)
+import { addItemToCart, removeItemFromCart } from "./cart.utils";
 
 const INITIAL_STATE = {
     hidden: true,
@@ -24,6 +27,22 @@ const cartReducer = (state = INITIAL_STATE, action) => {
 
                 // Adding multiple items to cart (cart.utils.js)
                 cartItems: addItemToCart(state.cartItems, action.payload)
+            };
+
+        // Remove items at checkout(increase or decrease checkout page quantity)
+        case CartActionTypes.REMOVE_ITEM:
+            return {
+                ...state,
+
+                // Remove items at checkout(increase or decrease checkout page quantity) after(cart.utils.js)
+                cartItems: removeItemFromCart(state.cartItems, action.payload)
+            };
+
+        //Remove items from cart
+        case CartActionTypes.CLEAR_ITEM_FROM_CART:
+            return {
+                ...state,
+                cartItems: state.cartItems.filter(cartItem => cartItem.id !== action.payload.id)
             };
 
         default:

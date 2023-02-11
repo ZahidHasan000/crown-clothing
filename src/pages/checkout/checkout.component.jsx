@@ -53,7 +53,7 @@ const CheckoutPage = ({ cartItems, total }) => (
             cartItems.map(cartItem => cartItem.name)
         } */}
 
-        {/* Reason forCheckout-Item component */}
+        {/* Reason for Checkout-Item component */}
         {cartItems.map(cartItem => (
             <CheckoutItem key={cartItem.id} cartItem={cartItem} />
         ))}
