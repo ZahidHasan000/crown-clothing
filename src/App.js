@@ -108,7 +108,7 @@ class App extends React.Component {
           {/* <Routes> */}
           {/* <BrowserRouter> */}
           <Route exact path='/' component={HomePage} />
-          <Route exact path='/shop' component={ShopPage} />
+          <Route path='/shop' component={ShopPage} />
 
           {/* //reason for checkout page */}
           <Route exact path='/checkout' component={CheckoutPage} />
