@@ -7,7 +7,13 @@ import logger from 'redux-logger';
 
 import rootReducer from './root-reducer';
 
-const middlewares = [logger];
+// const middlewares = [logger];
+
+//Optimizing production build
+const middlewares = [];
+if (process.env.NODE_ENV === 'development') {
+    middlewares.push(logger)
+};
 
 //Redux-persist(localStorage/sessionStorage)
 export const store = createStore(rootReducer, applyMiddleware(...middlewares))
