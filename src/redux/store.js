@@ -7,6 +7,7 @@ import logger from 'redux-logger';
 
 import rootReducer from './root-reducer';
 
+//Redux logger
 // const middlewares = [logger];
 
 //Optimizing production build
